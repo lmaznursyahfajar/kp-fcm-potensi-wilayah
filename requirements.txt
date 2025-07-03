@@ -8,3 +8,4 @@ streamlit
 geopandas
 folium
 streamlit-folium
+openpyxl

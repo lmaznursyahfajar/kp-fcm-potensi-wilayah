@@ -145,13 +145,6 @@ with col_main:
             fcm_labels = np.argmax(u, axis=0)
             df["FCM_Cluster"] = fcm_labels
 
-            st.subheader("📈 Evaluasi Klaster")
-            st.markdown(f"""
-            - **Silhouette Score**: {silhouette_score(X_scaled, fcm_labels):.4f}  
-            - **Davies-Bouldin Index**: {davies_bouldin_score(X_scaled, fcm_labels):.4f}  
-            - **Calinski-Harabasz Score**: {calinski_harabasz_score(X_scaled, fcm_labels):.2f}
-            """)
-
             pca = PCA(n_components=2)
             components = pca.fit_transform(X_scaled)
             fig1, ax1 = plt.subplots()
@@ -309,13 +302,6 @@ with col_main:
                 cntr, u, _, _, _, _, _ = fuzz.cluster.cmeans(X_scaled.T, c=k, m=m_param, error=0.005, maxiter=1000)
                 fcm_labels = np.argmax(u, axis=0)
                 df["FCM_Cluster"] = fcm_labels
-
-                st.subheader("📈 Evaluasi Klaster")
-                st.markdown(f"""
-                - **Silhouette Score**: {silhouette_score(X_scaled, fcm_labels):.4f}  
-                - **Davies-Bouldin Index**: {davies_bouldin_score(X_scaled, fcm_labels):.4f}  
-                - **Calinski-Harabasz Score**: {calinski_harabasz_score(X_scaled, fcm_labels):.2f}
-                """)
 
                 # Visualisasi PCA
                 pca = PCA(n_components=2)

@@ -111,6 +111,45 @@ elif menu == "🧮 Klastering Data Internal":
     except Exception as e:
         st.error(f"Gagal memproses data: {e}")
 
+def interpretasi_klaster(sheet_name):
+    if "pertanian" in sheet_name.lower():
+        return """
+        #### 🌾 Interpretasi Klaster (Pertanian)
+        - **Klaster 0**:  Sentra Produksi Padi & Jagung Skala Besar.
+        - **Klaster 1**: Wilayah Non-Agraris atau Pendukung. Lahan kecil atau sedikit komoditas.
+        - **Klaster 2**: Pertanian Menengah & Diversifikasi Komoditas.
+        """
+    elif "umkm" in sheet_name.lower():
+        return """
+        #### 🛍️ Interpretasi Klaster (UMKM)
+        - **Klaster 0**: Dominasi Usaha Skala Menengah & Besar.
+        - **Klaster 1**: Aktivitas UMKM Rendah.
+        - **Klaster 2**: Dominasi Usaha Mikro & Kecil.
+        """
+    elif "perkebunan" in sheet_name.lower() and "buah" not in sheet_name.lower():
+        return """
+        #### 🌴 Interpretasi Klaster (Perkebunan)
+        - **Klaster 0**: Sentra Perkebunan Kakao dan Komoditas Ekspor.
+        - **Klaster 1**: Wilayah Perkebunan Kecil & Skala Rumah Tangga.
+        - **Klaster 2**: Sentra Produksi Menengah dengan Wilayah Campuran dengan Variasi Komoditas.
+        """
+    elif "perkebunan_buah" in sheet_name.lower():
+        return """
+        #### 🍍 Interpretasi Klaster (Perkebunan Buah)
+        - **Klaster 0**: Produksi Kecil dan Menengah.
+        - **Klaster 1**: Produksi Besar dan Terdiversifikasi.
+        - **Klaster 2**: Pusat Sentra Unggulan.
+        """
+    elif "perikanan" in sheet_name.lower():
+        return """
+        #### 🐟 Interpretasi Klaster (Perikanan)
+        - **Klaster 0**: Wilayah Fokus Budidaya Skala Menengah.
+        - **Klaster 1**: Wilayah dengan Potensi Budidaya Skala Besar.
+        - **Klaster 2**: Wilayah Dominan Perikanan Tangkap.
+        """
+    else:
+        return "⚠️ Data tidak termasuk dalam kategori pertanian, perikanan, atau perkebunan."
+
 elif menu == "🗺️ Visualisasi Peta":
     st.title("🗺️ Visualisasi Peta")
     try:
@@ -226,41 +265,3 @@ elif menu == "📤 Unggah Data Sendiri":
         except Exception as e:
             st.error(f"Gagal memproses file: {e}")
 
-def interpretasi_klaster(sheet_name):
-    if "pertanian" in sheet_name.lower():
-        return """
-        #### 🌾 Interpretasi Klaster (Pertanian)
-        - **Klaster 0**:  Sentra Produksi Padi & Jagung Skala Besar.
-        - **Klaster 1**: Wilayah Non-Agraris atau Pendukung. Lahan kecil atau sedikit komoditas.
-        - **Klaster 2**: Pertanian Menengah & Diversifikasi Komoditas.
-        """
-    elif "umkm" in sheet_name.lower():
-        return """
-        #### 🛍️ Interpretasi Klaster (UMKM)
-        - **Klaster 0**: Dominasi Usaha Skala Menengah & Besar.
-        - **Klaster 1**: Aktivitas UMKM Rendah.
-        - **Klaster 2**: Dominasi Usaha Mikro & Kecil.
-        """
-    elif "perkebunan" in sheet_name.lower() and "buah" not in sheet_name.lower():
-        return """
-        #### 🌴 Interpretasi Klaster (Perkebunan)
-        - **Klaster 0**: Sentra Perkebunan Kakao dan Komoditas Ekspor.
-        - **Klaster 1**: Wilayah Perkebunan Kecil & Skala Rumah Tangga.
-        - **Klaster 2**: Sentra Produksi Menengah dengan Wilayah Campuran dengan Variasi Komoditas.
-        """
-    elif "perkebunan_buah" in sheet_name.lower():
-        return """
-        #### 🍍 Interpretasi Klaster (Perkebunan Buah)
-        - **Klaster 0**: Produksi Kecil dan Menengah.
-        - **Klaster 1**: Produksi Besar dan Terdiversifikasi.
-        - **Klaster 2**: Pusat Sentra Unggulan.
-        """
-    elif "perikanan" in sheet_name.lower():
-        return """
-        #### 🐟 Interpretasi Klaster (Perikanan)
-        - **Klaster 0**: Wilayah Fokus Budidaya Skala Menengah.
-        - **Klaster 1**: Wilayah dengan Potensi Budidaya Skala Besar.
-        - **Klaster 2**: Wilayah Dominan Perikanan Tangkap.
-        """
-    else:
-        return "⚠️ Data tidak termasuk dalam kategori pertanian, perikanan, atau perkebunan."

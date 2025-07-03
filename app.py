@@ -28,12 +28,6 @@ col_menu, col_main = st.columns([1, 4], gap="medium")
 with col_menu:
     st.markdown("""
         <style>
-        .menu-box {
-            background-color: #f0f2f6;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
         .menu-title {
             font-size: 20px;
             font-weight: 600;

@@ -108,7 +108,6 @@ with col_main:
             ### 🎯 Fitur Utama:
             - Klasterisasi berdasarkan data pertanian, perikanan, perkebunan, dll
             - Visualisasi hasil dalam bentuk grafik dan peta interaktif
-            - Evaluasi klaster menggunakan metrik seperti Silhouette Score
             - Dukungan data internal dan upload data mandiri
 
             🚀 Silakan mulai dari menu di sebelah kiri untuk menjelajahi fitur-fitur aplikasi ini!

@@ -292,7 +292,7 @@ elif menu == "Rekomendasi":
                 elif klaster == 1:
                     return "🌱 Program intensifikasi lahan kecil & pelatihan pertanian berkelanjutan untuk rumah tangga tani."
                 else:
-                    return "🌾 Kembangkan komoditas alternatif (hortikultura/umbi) dan fasilitasi pasar lokal."
+                    return "🌾 Kembangkan komoditas alternatif (umbi-umbian/tanaman pangan lain) dan fasilitasi pasar lokal."
             elif "umkm" in sheet:
                 if klaster == 0:
                     return "📦 Dorong ekspor UMKM dan adopsi teknologi digital untuk skala produksi besar."

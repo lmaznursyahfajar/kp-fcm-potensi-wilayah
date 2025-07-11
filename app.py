@@ -150,7 +150,7 @@ if menu == "Beranda":
 
 # ======================= MENU KLASTERING ========================
 elif menu == "Klastering":
-    st.title("🔍 Klastering Data Internal menguunakan Fuzzy C Means")
+    st.title("🔍 Klastering Data Internal")
     try:
         file_path = "data_sultra.xlsx"
         sheet_names = pd.ExcelFile(file_path).sheet_names

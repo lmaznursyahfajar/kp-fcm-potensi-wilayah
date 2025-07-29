@@ -181,8 +181,6 @@ elif menu == "Klastering":
             else:
                 df_klaster_gabungan = df_klaster_gabungan.join(df_temp, how='outer')
 
-        st.dataframe(df_klaster_gabungan)
-
         # ========================= Visualisasi untuk sheet terpilih ============================
         df_selected = pd.read_excel(file_path, sheet_name=selected_sheet)
         df_selected = df_selected.rename(columns={df_selected.columns[0]: "Kabupaten/Kota"}).set_index("Kabupaten/Kota").fillna(0)

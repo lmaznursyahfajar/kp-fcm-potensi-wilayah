@@ -154,23 +154,48 @@ elif menu == "Klastering":
     try:
         file_path = "data_sultra.xlsx"
         sheet_names = pd.ExcelFile(file_path).sheet_names
-        selected_sheet = st.selectbox("Pilih jenis data:", sheet_names)
-
-        df = pd.read_excel(file_path, sheet_name=selected_sheet)
-        df = df.rename(columns={df.columns[0]: "Kabupaten/Kota"}).set_index("Kabupaten/Kota").fillna(0)
-
-        st.subheader("📄 Data Awal")
-        st.dataframe(df)
+        selected_sheet = st.selectbox("Pilih jenis data untuk visualisasi:", sheet_names)
 
         k = st.slider("Jumlah Klaster", 2, 10, 3)
         m_param = 2
 
+        df_klaster_gabungan = pd.DataFrame()
+
+        st.subheader("📄 Klasterisasi per Sektor")
+        for sheet in sheet_names:
+            df = pd.read_excel(file_path, sheet_name=sheet)
+            df = df.rename(columns={df.columns[0]: "Kabupaten/Kota"}).set_index("Kabupaten/Kota").fillna(0)
+
+            scaler = StandardScaler()
+            X_scaled = scaler.fit_transform(df)
+
+            np.random.seed(42)
+            cntr, u, _, _, _, _, _ = fuzz.cluster.cmeans(X_scaled.T, c=k, m=m_param, error=0.005, maxiter=1000)
+            fcm_labels = np.argmax(u, axis=0)
+
+            # Masukkan hasil klaster ke dataframe gabungan
+            df_temp = pd.DataFrame({f"Klaster_{sheet}": fcm_labels}, index=df.index)
+
+            if df_klaster_gabungan.empty:
+                df_klaster_gabungan = df_temp
+            else:
+                df_klaster_gabungan = df_klaster_gabungan.join(df_temp, how='outer')
+
+        st.dataframe(df_klaster_gabungan)
+
+        # ========================= Visualisasi untuk sheet terpilih ============================
+        df_selected = pd.read_excel(file_path, sheet_name=selected_sheet)
+        df_selected = df_selected.rename(columns={df_selected.columns[0]: "Kabupaten/Kota"}).set_index("Kabupaten/Kota").fillna(0)
+
+        st.subheader(f"📄 Data Awal - {selected_sheet}")
+        st.dataframe(df_selected)
+
         scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(df)
+        X_scaled = scaler.fit_transform(df_selected)
         np.random.seed(42)
         cntr, u, _, _, _, _, _ = fuzz.cluster.cmeans(X_scaled.T, c=k, m=m_param, error=0.005, maxiter=1000)
         fcm_labels = np.argmax(u, axis=0)
-        df["FCM_Cluster"] = fcm_labels
+        df_selected["FCM_Cluster"] = fcm_labels
 
         st.subheader("📊 Visualisasi Klaster")
 
@@ -189,7 +214,7 @@ elif menu == "Klastering":
 
         with col_matriks:
             st.markdown("**📌 Matriks Keanggotaan**")
-            membership_df = pd.DataFrame(u.T, index=df.index, columns=[f'Cluster_{i}' for i in range(k)])
+            membership_df = pd.DataFrame(u.T, index=df_selected.index, columns=[f'Cluster_{i}' for i in range(k)])
             fig2, ax2 = plt.subplots(figsize=(5, 4))
             sns.heatmap(membership_df, annot=True, cmap="YlGnBu", fmt=".2f", ax=ax2, cbar=False)
             ax2.set_title("Matriks Keanggotaan")
@@ -197,19 +222,22 @@ elif menu == "Klastering":
 
         with col_distribusi:
             st.markdown("**📌 Distribusi Klaster**")
-            cluster_counts = df["FCM_Cluster"].value_counts().sort_index()
+            cluster_counts = df_selected["FCM_Cluster"].value_counts().sort_index()
             fig3, ax3 = plt.subplots()
             sns.barplot(x=cluster_counts.index, y=cluster_counts.values, palette='viridis', ax=ax3)
             ax3.set_title("Distribusi Wilayah")
             st.pyplot(fig3)
 
-        st.subheader("📋 Tabel Hasil")
-        st.dataframe(df)
+        st.subheader(f"📋 Tabel Hasil - {selected_sheet}")
+        st.dataframe(df_selected)
 
-        csv = df.reset_index().to_csv(index=False).encode("utf-8")
-        st.download_button("⬇️ Unduh Hasil CSV", data=csv, file_name=f"hasil_fcm_{selected_sheet}.csv", mime="text/csv")
+        st.subheader("📋 Tabel Hasil Klaster per Sektor")
+        st.dataframe(df_klaster_gabungan)
 
-        st.session_state["df_klaster"] = df
+        csv = df_klaster_gabungan.reset_index().to_csv(index=False).encode("utf-8")
+        st.download_button("⬇️ Unduh Hasil Gabungan CSV", data=csv, file_name="hasil_fcm_gabungan.csv", mime="text/csv")
+
+        st.session_state["df_klaster"] = df_selected
         st.session_state["selected_sheet"] = selected_sheet
 
     except Exception as e:

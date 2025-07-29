@@ -161,7 +161,6 @@ elif menu == "Klastering":
 
         df_klaster_gabungan = pd.DataFrame()
 
-        st.subheader("📄 Klasterisasi per Sektor")
         for sheet in sheet_names:
             df = pd.read_excel(file_path, sheet_name=sheet)
             df = df.rename(columns={df.columns[0]: "Kabupaten/Kota"}).set_index("Kabupaten/Kota").fillna(0)
